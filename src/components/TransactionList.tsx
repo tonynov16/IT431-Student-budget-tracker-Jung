@@ -11,7 +11,7 @@ interface TransactionListProps {
   onDeleteTransaction: (id: number) => void;
 }
 
-const categoryFilters: ("All" | Category)[] = [
+const categoryFilters: ("ALL" | Category)[] = [
   "All",
   "Food",
   "Transport",
