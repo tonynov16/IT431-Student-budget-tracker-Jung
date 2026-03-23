@@ -6,6 +6,11 @@ import TransactionItem from "./TransactionItem";
 //         - transactions: Transaction[]
 //         - onDeleteTransaction: a function that takes (id: number) and returns void
 
+interface TransactionListProps {
+  transactions: Transaction[];
+  onDeleteTransaction: (id: number) => void;
+}
+
 const categoryFilters: ("All" | Category)[] = [
   "All",
   "Food",
@@ -19,61 +24,60 @@ const categoryFilters: ("All" | Category)[] = [
 
 // TODO 2: Update the function signature to accept props using your interface.
 
-function TransactionList() {
+function TransactionList({ transactions, onDeleteTransaction }: TransactionListProps) {
   // TODO 3: Create a state variable called "activeFilter" of type ("All" | Category),
   //         initialized to "All"
-
+const [activeFilter, setActiveFilter] = useState<"ALL" | Category>("ALL");
   // TODO 4: Create a "filteredTransactions" variable that:
   //         - If activeFilter is "All", returns all transactions
   //         - Otherwise, returns only transactions matching the selected category
   //         Hint: Use a ternary with .filter()
 
+const filteredTransactions =
+  activeFilter === "ALL"
+    ? transactions
+    : transactions.filter((t) => t.category === activeFilter);
+
   return (
     <div className="transactions-card">
       <div className="transactions-header">
         <h2>📋 Transactions</h2>
-        {/* TODO 5: Show the count of filtered transactions
-            <span className="transaction-count">
-              {filteredTransactions.length} {filteredTransactions.length === 1 ? "item" : "items"}
-            </span>
-        */}
+        <span className="transaction-count">
+          {filteredTransactions.length}{" "}
+          {filteredTransactions.length === 1 ? "item" : "items"}
+        </span>
       </div>
 
       {/* Filter Buttons */}
       <div className="filter-bar">
-        {/* TODO 6: Map over categoryFilters to create filter buttons.
-            Each button should:
-            - Have className "filter-btn" (add "active" class when it matches activeFilter)
-            - Call setActiveFilter on click
-            
-            Hint:
-            {categoryFilters.map((filter) => (
-              <button
-                key={filter}
-                className={`filter-btn ${activeFilter === filter ? "active" : ""}`}
-                onClick={() => setActiveFilter(filter)}
-              >
-                {filter}
-              </button>
-            ))}
-        */}
+       {categoryFilters.map((filter) => (
+        <button
+          key={filter}
+          className={`filter-btn ${activeFilter === filter ? "active" : ""}`}
+          onClick={() => setActiveFilter(filter)}
+        >
+          {filter}
+        </button>
+       ))}
       </div>
 
       {/* Transaction Items */}
       <div className="transaction-list">
-        {/* TODO 7: Conditionally render either:
-            A) An empty state when filteredTransactions has no items:
+        {filteredTransactions.length === 0 ? (
                <div className="empty-state">
                  <div className="empty-icon">💰</div>
                  <p>No transactions yet</p>
                  <p className="hint">Add your first transaction to get started</p>
                </div>
-
-            B) A list of TransactionItem components when there are items:
-               Map over filteredTransactions and render a TransactionItem for each one.
-               Pass the transaction and onDeleteTransaction as props.
-               Don't forget the key prop!
-        */}
+              ) : (
+                filteredTransactions.map((transaction) => (
+                  <TransactionItem
+                    key={transaction.id}
+                    transaction={transaction}
+                    onDelete={onDeleteTransaction}
+                />
+              ))
+            )}
       </div>
     </div>
   );
