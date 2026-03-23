@@ -12,7 +12,7 @@ interface TransactionListProps {
 }
 
 const categoryFilters: ("ALL" | Category)[] = [
-  "All",
+  "ALL",
   "Food",
   "Transport",
   "Entertainment",
