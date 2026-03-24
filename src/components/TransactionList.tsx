@@ -11,8 +11,8 @@ interface TransactionListProps {
   onDeleteTransaction: (id: number) => void;
 }
 
-const categoryFilters: ("ALL" | Category)[] = [
-  "ALL",
+const categoryFilters: ("All" | Category)[] = [
+  "All",
   "Food",
   "Transport",
   "Entertainment",
@@ -34,7 +34,7 @@ const [activeFilter, setActiveFilter] = useState<"ALL" | Category>("ALL");
   //         Hint: Use a ternary with .filter()
 
 const filteredTransactions =
-  activeFilter === "ALL"
+  activeFilter === "All"
     ? transactions
     : transactions.filter((t) => t.category === activeFilter);
 
